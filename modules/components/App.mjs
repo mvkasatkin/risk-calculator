@@ -25,7 +25,7 @@ export const App = () => {
       <div class="row">
         <div class="cell">
           <div class="label">Цена акции</div>
-          <input class="input" type="number" value=${price} onInput=${e => setPrice(e.target.value)} />
+          <input autofocus class="input" type="number" value=${price} onInput=${e => setPrice(e.target.value)} />
         </div>
         <div class="cell">
           <div class="label">Цена stop loss</div>
@@ -36,7 +36,7 @@ export const App = () => {
       <div class="row">
         <div class="cell">
           <div class="label">Допустимый риск</div>
-          <input autofocus class="input" type="phone" value=${risk} onInput=${e => updateRisk(e.target.value)} />
+          <input class="input" type="phone" value=${risk} onInput=${e => updateRisk(e.target.value)} />
         </div>
         <div class="cell">
           <div class="label">Лот</div>
