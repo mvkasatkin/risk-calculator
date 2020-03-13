@@ -6,19 +6,21 @@ const calculator = new Calculator()
 
 export const App = () => {
   const [lot, setLot] = useState('1')
-  const [risk, setRisk] = useState('')
+  const [risk, setRisk] = useState(localStorage.getItem('risk') || '')
   const [stop, setStop] = useState('')
   const [price, setPrice] = useState('')
   const [commission, setCommission] = useState('0')
 
   const { money, lots } = calculator.calc(risk, price, stop, lot, commission)
 
+  const updateRisk = (v) => {
+    localStorage.setItem('risk', v)
+    setRisk(v)
+  }
+
   return html`
     <div class="app">
       <h1 class="title">Калькулятор риска</h1>
-
-      <div class="label">Допустимый риск</div>
-      <input class="input" type="phone" value=${risk} onInput=${e => setRisk(e.target.value)} />
 
       <div class="row">
         <div class="cell">
@@ -33,17 +35,19 @@ export const App = () => {
 
       <div class="row">
         <div class="cell">
+          <div class="label">Допустимый риск</div>
+          <input autofocus class="input" type="phone" value=${risk} onInput=${e => updateRisk(e.target.value)} />
+        </div>
+        <div class="cell">
           <div class="label">Лот</div>
           <input class="input" type="number" value=${lot} onInput=${e => setLot(e.target.value)} />
         </div>
-        <div class="cell">
-          <div class="label">Коммиссия (%)</div>
-          <input class="input" type="number" value=${commission} onInput=${e => setCommission(e.target.value)} />
-        </div>
       </div>
 
-      <div>Money: ${money}</div>
-      <div>Lots: ${lots}</div>
+      <div class="result">
+        <div>Money: <span class="result__value">${money}</span></div>
+        <div>Lots: <span class="result__value">${lots}</span></div>
+      </div>
     </div>
   `
 }
