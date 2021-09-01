@@ -14,6 +14,10 @@ export const App = () => {
   const [commission, setCommission] = useState('0')
 
   const { money, lots } = calculator.calc(risk, price, stop, lot, commission)
+  const tp1 = Math.round((parseFloat(price) + (parseFloat(price) - parseFloat(stop))) * 100) / 100 || 0
+  const tp2 = Math.round((parseFloat(price) + (parseFloat(price) - parseFloat(stop)) * 1.5) * 100) / 100 || 0
+  const tp3 = Math.round((parseFloat(price) + (parseFloat(price) - parseFloat(stop)) * 2) * 100) / 100 || 0
+  const tp4 = Math.round((parseFloat(price) + (parseFloat(price) - parseFloat(stop)) * 3) * 100) / 100 || 0
 
   const updateApiKey = (v) => {
     localStorage.setItem('apiKey', v)
@@ -64,18 +68,18 @@ export const App = () => {
       <div class="row">
         <div class="cell">
           <div class="label">Цена акции</div>
-          <input autofocus class="input" type="text" value=${price} onInput=${e => updatePrice(e.target.value)} />
+          <input tabindex="2" autofocus class="input" type="text" value=${price} onInput=${e => updatePrice(e.target.value)} />
         </div>
         <div class="cell">
           <div class="label">Цена stop loss</div>
-          <input tabindex="2" class="input" type="text" value=${stop} onInput=${e => updateStop(e.target.value)} />
+          <input tabindex="3" class="input" type="text" value=${stop} onInput=${e => updateStop(e.target.value)} />
         </div>
       </div>
 
       <div class="row">
         <div class="cell">
           <div class="label">Допустимый риск</div>
-          <input tabindex="3" class="input" type="phone" value=${risk} onInput=${e => updateRisk(e.target.value)} />
+          <input tabindex="4" class="input" type="phone" value=${risk} onInput=${e => updateRisk(e.target.value)} />
         </div>
         <div class="cell">
           <div class="label">Лот</div>
@@ -86,6 +90,12 @@ export const App = () => {
       <div class="result">
         <div>Money: <span class="result__value">${money}</span></div>
         <div>Lots: <span class="result__value">${lots}</span></div>
+      </div>
+      <div class="take">
+        <div>Take 1.0: <span class="take__value">${tp1}</span></div>
+        <div>Take 1.5: <span class="take__value">${tp2}</span></div>
+        <div>Take 2.0: <span class="take__value">${tp3}</span></div>
+        <div>Take 3.0: <span class="take__value">${tp4}</span></div>
       </div>
     </div>
   `

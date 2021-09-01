@@ -61,7 +61,11 @@ body {
     justify-content: space-around;
 }
 
-.result__value {
+.take {
+    margin-top: 20px;
+}
+
+.take__value {
     font-weight: 800;
-    font-size: 28px;
+    font-size: 18px;
 }
