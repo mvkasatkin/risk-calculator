@@ -10,6 +10,7 @@ export const App = () => {
   const [lot, setLot] = useState('1')
   const [risk, setRisk] = useState(localStorage.getItem('risk') || '')
   const [stop, setStop] = useState('')
+  const [stopPercent, setStopPercent] = useState('')
   const [price, setPrice] = useState('')
   const [commission, setCommission] = useState('0')
 
@@ -46,8 +47,20 @@ export const App = () => {
     setPrice(`${parseFloat(v.replace(',', '.').replace('б', '.').replace('ю', '.'))}`)
   }
 
-  const updateStop = (v) => {
-    setStop(`${parseFloat(v.replace(',', '.').replace('б', '.').replace('ю', '.'))}`)
+  const updateStop = (v, vPercent) => {
+    const p = parseFloat(price)
+    if (v) {
+      const stop = parseFloat(v.replace(',', '.').replace('б', '.').replace('ю', '.'))
+      const stopPercent = Math.round((stop - p) / p * 10000) / 100
+      setStop(`${stop || ''}`)
+      setStopPercent(`${stopPercent || ''}`)
+
+    } else if (vPercent) {
+      const stopPercent = parseFloat(v.replace(',', '.').replace('б', '.').replace('ю', '.'))
+      const stop = Math.round((p + (p / 100 * stopPercent)) * 100) / 100
+      setStop(`${stop || ''}`)
+      setStopPercent(`${stopPercent || ''}`)
+    }
   }
 
   return html`
@@ -71,20 +84,24 @@ export const App = () => {
           <input tabindex="2" autofocus class="input" type="text" value=${price} onInput=${e => updatePrice(e.target.value)} />
         </div>
         <div class="cell">
-          <div class="label">Цена stop loss</div>
-          <input tabindex="3" class="input" type="text" value=${stop} onInput=${e => updateStop(e.target.value)} />
+          <div class="label">Допустимый риск</div>
+          <input tabindex="4" class="input" type="phone" value=${risk} onInput=${e => updateRisk(e.target.value)} />
         </div>
       </div>
 
       <div class="row">
         <div class="cell">
-          <div class="label">Допустимый риск</div>
-          <input tabindex="4" class="input" type="phone" value=${risk} onInput=${e => updateRisk(e.target.value)} />
+          <div class="label">Цена stop loss</div>
+          <input tabindex="3" class="input" type="text" value=${stop} onInput=${e => updateStop(e.target.value)} />
         </div>
         <div class="cell">
-          <div class="label">Лот</div>
-          <input class="input" type="number" value=${lot} onInput=${e => setLot(e.target.value)} />
+          <div class="label">Цена stop loss в %</div>
+          <input tabindex="3" class="input" type="text" value=${stopPercent} onInput=${e => updateStop(undefined, e.target.value)} />
         </div>
+        // <div class="cell">
+        //   <div class="label">Лот</div>
+        //   <input class="input" type="number" value=${lot} onInput=${e => setLot(e.target.value)} />
+        // </div>
       </div>
 
       <div class="result">
