@@ -55,7 +55,7 @@ export const App = () => {
       setStop(`${stop || ''}`)
       setStopPercent(`${stopPercent || ''}`)
 
-    } else if (vPercent) {
+    } else if (vPercent && vPercent !== '-') {
       const stopPercent = parseFloat(vPercent.replace(',', '.').replace('б', '.').replace('ю', '.'))
       const stop = Math.round((p + (p / 100 * stopPercent)) * 100) / 100
       setStop(`${stop || ''}`)
@@ -116,6 +116,7 @@ export const App = () => {
         <div>Take 2.0: <span class="take__value">${tp3}</span></div>
         <div>Take 3.0: <span class="take__value">${tp4}</span></div>
       </div>
+      {!!ticker && !!apiKey && !!tp1 && <Button onClick=${() => buyMarket(ticker, lots, apiKey)}>Buy</Button>}
     </div>
   `
 }
@@ -142,6 +143,32 @@ async function fetchPrice(ticker, apiKey) {
       const candle = response2.payload.candles[response2.payload.candles.length - 1]
       return candle.c
     }
+  }
+
+  return ''
+}
+
+async function buyMarket(ticker, count, apiKey) {
+  const url = 'https://api-invest.tinkoff.ru/openapi'
+
+  const opts = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+  }
+  const response1 = await (await fetch(`${url}/market/search/by-ticker?ticker=${ticker}`, opts)).json()
+  if (response1 && response1.payload && response1.payload.instruments) {
+    const instrument = response1.payload.instruments[0]
+    const figi = instrument.figi
+    const response2 = await (await fetch(`${url}/orders/market-order?figi=${figi}`, {
+      ...opts,
+      method: 'POST',
+      body: { lots: count, operation: 'Buy' },
+    })).json()
+    alert(JSON.stringify(data?.error || data?.payload))
   }
 
   return ''
