@@ -116,7 +116,7 @@ export const App = () => {
         <div>Take 2.0: <span class="take__value">${tp3}</span></div>
         <div>Take 3.0: <span class="take__value">${tp4}</span></div>
       </div>
-      {!!ticker && !!apiKey && !!tp1 && <Button onClick=${() => buyMarket(ticker, lots, apiKey)}>Buy</Button>}
+      {<Button onClick=${() => buyMarket(ticker, lots, apiKey)}>Buy</Button>}
     </div>
   `
 }
@@ -149,6 +149,11 @@ async function fetchPrice(ticker, apiKey) {
 }
 
 async function buyMarket(ticker, count, apiKey) {
+  if (!ticker || isNaN(count) || !apiKey) {
+    console.error(ticker, count, apiKey)
+    alert('wrong params')
+    return
+  }
   const url = 'https://api-invest.tinkoff.ru/openapi'
 
   const opts = {
