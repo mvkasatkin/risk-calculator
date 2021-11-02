@@ -171,7 +171,7 @@ async function buyMarket(ticker, count, apiKey) {
     const response2 = await (await fetch(`${url}/orders/market-order?figi=${figi}`, {
       ...opts,
       method: 'POST',
-      body: { lots: count, operation: 'Buy' },
+      body: JSON.stringify({ lots: count, operation: 'Buy' }),
     })).json()
     alert(JSON.stringify(response2?.error || response2?.payload))
   }
