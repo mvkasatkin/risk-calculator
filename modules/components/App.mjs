@@ -56,7 +56,7 @@ export const App = () => {
       setStopPercent(`${stopPercent || ''}`)
 
     } else if (vPercent) {
-      const stopPercent = parseFloat(v.replace(',', '.').replace('б', '.').replace('ю', '.'))
+      const stopPercent = parseFloat(vPercent.replace(',', '.').replace('б', '.').replace('ю', '.'))
       const stop = Math.round((p + (p / 100 * stopPercent)) * 100) / 100
       setStop(`${stop || ''}`)
       setStopPercent(`${stopPercent || ''}`)
@@ -98,10 +98,12 @@ export const App = () => {
           <div class="label">Цена stop loss в %</div>
           <input tabindex="3" class="input" type="text" value=${stopPercent} onInput=${e => updateStop(undefined, e.target.value)} />
         </div>
-        // <div class="cell">
-        //   <div class="label">Лот</div>
-        //   <input class="input" type="number" value=${lot} onInput=${e => setLot(e.target.value)} />
-        // </div>
+        <!--
+        <div class="cell">
+          <div class="label">Лот</div>
+          <input class="input" type="number" value=${lot} onInput=${e => setLot(e.target.value)} />
+        </div>
+        -->
       </div>
 
       <div class="result">
