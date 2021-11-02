@@ -173,7 +173,7 @@ async function buyMarket(ticker, count, apiKey) {
       method: 'POST',
       body: { lots: count, operation: 'Buy' },
     })).json()
-    alert(JSON.stringify(data?.error || data?.payload))
+    alert(JSON.stringify(response2?.error || response2?.payload))
   }
 
   return ''
